@@ -663,7 +663,7 @@ function winCheck() {
 	console.log("Front horizontal check started.");
 	//check all nine possible horizontal lines (from the front prespective).
 	//redundant (same as top horizontal check).
-	for (var a = 0; a < 3; a++) {
+	/*for (var a = 0; a < 3; a++) {
 		for (var b = 0; b < 3; b++) {
 			//if all of the positions in the current horizontal line are the same and one is not equal to zero, then a player won.
 			if((xoCubeArray[a][b][0] !== 0) && (xoCubeArray[a][b][0] === xoCubeArray[a][b][1]) && (xoCubeArray[a][b][1] === xoCubeArray[a][b][2])) {
@@ -672,7 +672,7 @@ function winCheck() {
 				return;
 			}
 		}
-	}
+	}*/
 	console.log("Front diagonal (top left to bottom right) check started.");
 	//check all of the three possible diagonal (top left to bottom right) lines (from the front prespective).
 	for (var a = 0; a < 3; a++) {
@@ -700,7 +700,7 @@ function winCheck() {
 	console.log("Side vertical check started.");
 	//check all nine of the possible vertical lines (from the side prespective).
 	//redundant (same as front vertical).
-	for (var a = 0; a < 3; a++) {
+	/*for (var a = 0; a < 3; a++) {
 		for (var b = 0; b < 3; b++) {
 			//if all of the positions in the current vertical line are the same and one is not equal to zero, then a player won.
 			if((xoCubeArray[0][a][b] !== 0) && (xoCubeArray[0][a][b] === xoCubeArray[1][a][b]) && (xoCubeArray[1][a][b] === xoCubeArray[2][a][b])) {
@@ -709,11 +709,11 @@ function winCheck() {
 				return;
 			}
 		}
-	}
+	}*/
 	console.log("Side horizontal check started.");
 	//check all nine of the possible horizontal lines (from the side prespective).
 	//redundant (same as top vertical check.)
-	for (var a = 0; a < 3; a++) {
+	/*for (var a = 0; a < 3; a++) {
 		for (var b = 0; b < 3; b++) {
 			//if all of the positions in the current horizontal line are the same and one is not equal to zero, then a player won.
 			if((xoCubeArray[a][0][b] !== 0) && (xoCubeArray[a][0][b] === xoCubeArray[a][1][b]) && (xoCubeArray[a][1][b] === xoCubeArray[a][2][b])) {
@@ -722,7 +722,7 @@ function winCheck() {
 				return;
 			}
 		}
-	}
+	}*/
 	console.log("Side diagonal (top left to bottom right) check started.");
 	//check all three possible diagonal (top left to bottom right) lines (from the side prespective).
 	for (var a = 0; a < 3; a++) {
