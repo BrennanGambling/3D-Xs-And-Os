@@ -170,22 +170,34 @@ function drawSquares() {
 drawSquares();
 
 
+//This message helps explain the game to the user before they play. It will only be displayed once when page is loade. Unless page is refresed it will not be displayed again.
 alert("This is 3D X's and O's. Each 2D X's and O's board represent a layer of the 3D X's and O's cube with the left most being the top and the right most being the bottom. To best play the game think of the cube as 2D X's and O's from the top of the cube, the front of the cube, and the side of the cube.");
 
 
 
 function clickableSquares() {
+	//create event listerners for all of the 27 click detection boxes.
+	//each event listener creation plus its function are grouped in blocks. 
+	//almost all of these are identical except for a different context and position in the array, therefore only the first one will be commented.
 	function topClickableSquares() {
 		ttlCanvas.addEventListener("click", ttlClick, false);
 		function ttlClick() {
 			console.log("ttlCanvas has been clicked. Click event triggered.");
+			//check to make sure the square clicked on isn't already taken.
+			//it will be set to 0 if it isn't taken.
 			if (xoCubeArray[0][0][0] === 0) {
+				//if it is not taken.
 				console.log("ttlCanvas events started (square is not taken).");
+				//draw the appropriate player (based on whos turn it is).
 				drawPlayer(ttlContext);
+				//switch to the other players turn.
 				xORoTurn();
+				//set the array position for this box to the appropriate player (based on whos turn it is).
 				xoCubeArraySetter(0, 0, 0);
+				//check to see if anyone has one.
 				winCheck();
 			} else {
+				//if it is write message to console.
 				console.log("ttlCanvas has already been set to: " + xoCubeArray[0][0][0] + "(1 = X, 2 = O)");
 			}
 		}
