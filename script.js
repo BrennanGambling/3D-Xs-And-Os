@@ -599,11 +599,12 @@ clickableSquares();
 function winCheck() {
 	console.log("Win checker started.");
 	
-
 	console.log("Top checks started.");
 	console.log("Top vertical check started.");
+	//check all possible vertical lines (from the top prespective).
 	for (var a = 0; a < 3; a++) {
 		for (var b = 0; b < 3; b++) {
+			//if all three position in the current vertical line are the same and one of them is not equal to 0, then a player won.
 			if((xoCubeArray[a][0][b] !== 0) && (xoCubeArray[a][0][b] === xoCubeArray[a][1][b]) && (xoCubeArray[a][1][b] === xoCubeArray[a][2][b])) {
 				console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
 				winEvent();
@@ -612,8 +613,10 @@ function winCheck() {
 		}
 	}
 	console.log("Top horizontal check started.");
+	//check all possible horizontal lines (from the top prespective).
 	for (var a = 0; a < 3; a++) {
 		for (var b = 0; b < 3; b++) {
+			//if all three position in the current horizontal line are the same and one of them is not equal to 0, then a player won.
 			if((xoCubeArray[a][b][0] !== 0) && (xoCubeArray[a][b][0] === xoCubeArray[a][b][1]) && (xoCubeArray[a][b][1] === xoCubeArray[a][b][2])) {
 				console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
 				winEvent();
@@ -622,7 +625,9 @@ function winCheck() {
 		}
 	}
 	console.log("Top diagonal (top left to bottom right) check started.");
+	//check the three possible diagonal (top left to bottom right) lines (from the top prespective).
 	for (var a = 0; a < 3; a++) {
+		//if all three position in the current diagonal line are the same and one is not equal to 0, then a player won.
 		if((xoCubeArray[a][0][0] !== 0) && (xoCubeArray[a][0][0] === xoCubeArray[a][1][1]) && (xoCubeArray[a][1][1] === xoCubeArray[a][2][2])) {
 			console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
 			winEvent();
@@ -630,7 +635,9 @@ function winCheck() {
 		}
 	}
 	console.log("Top diagonal (bottom left to top right) check started.");
+	//check the three possible diagonal (bottom left to top right) lines (from the top prespective).
 	for (var a = 0; a < 3; a++) {
+		//if all three position in the current diagonal line are the same and one is not equal to 0, than a player won.
 		if((xoCubeArray[a][2][0] !== 0) && (xoCubeArray[a][2][0] === xoCubeArray[a][1][1]) && (xoCubeArray[a][1][1] === xoCubeArray[a][0][2])) {
 			console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
 			winEvent();
@@ -641,19 +648,23 @@ function winCheck() {
 
 
 	console.log("Front checks started.");
+	//check all nine possible vertical lines (from the front prespective).
 	console.log("Front vertical check started.");
 	for (var a = 0; a < 3; a++) {
 		for (var b = 0; b < 3; b++) {
+			//if all of the positions in the current vertical line are the same and one is not equal to zero, then a player won.
 			if((xoCubeArray[0][a][b] !== 0) && (xoCubeArray[0][a][b] === xoCubeArray[1][a][b]) && (xoCubeArray[1][a][b] === xoCubeArray[2][a][b])) {
-			console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
-			winEvent();
-			return;
+				console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+				winEvent();
+				return;
 			}
 		}
 	}
 	console.log("Front horizontal check started.");
+	//check all nine possible horizontal lines (from the front prespective).
 	for (var a = 0; a < 3; a++) {
 		for (var b = 0; b < 3; b++) {
+			//if all of the positions in the current horizontal line are the same and one is not equal to zero, then a player won.
 			if((xoCubeArray[a][b][0] !== 0) && (xoCubeArray[a][b][0] === xoCubeArray[a][b][1]) && (xoCubeArray[a][b][1] === xoCubeArray[a][b][2])) {
 				console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
 				winEvent();
@@ -662,7 +673,9 @@ function winCheck() {
 		}
 	}
 	console.log("Front diagonal (top left to bottom right) check started.");
+	//check all of the three possible diagonal (top left to bottom right) lines (from the front prespective).
 	for (var a = 0; a < 3; a++) {
+		//if all of the positions in the current diagonal line are the same and one is not equal to zero, then a player won.
 		if((xoCubeArray[0][a][0] !== 0) && (xoCubeArray[0][a][0] === xoCubeArray[1][a][1]) && (xoCubeArray[1][a][1] === xoCubeArray[2][a][2])) {
 			console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
 			winEvent();
@@ -670,7 +683,9 @@ function winCheck() {
 		}
 	}
 	console.log("Front diagonal (bottom left to top right) check started.");
+	//check all of the three possible diagonal (bottom left to top right) lines (from the front prespective).
 	for (var a = 0; a < 3; a++) {
+		//if all of the positions in the current diagonal line are the same and one is not equal to zero, then a player won.
 		if((xoCubeArray[2][a][0] !== 0) && (xoCubeArray[2][a][0] === xoCubeArray[1][a][1]) && (xoCubeArray[1][a][1] === xoCubeArray[0][a][2])) {
 			console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
 			winEvent();
@@ -682,8 +697,10 @@ function winCheck() {
 
 	console.log("Side checks started.");
 	console.log("Side vertical check started.");
+	//check all nine of the possible vertical lines (from the side prespective).
 	for (var a = 0; a < 3; a++) {
 		for (var b = 0; b < 3; b++) {
+			//if all of the positions in the current vertical line are the same and one is not equal to zero, then a player won.
 			if((xoCubeArray[0][a][b] !== 0) && (xoCubeArray[0][a][b] === xoCubeArray[1][a][b]) && (xoCubeArray[1][a][b] === xoCubeArray[2][a][b])) {
 				console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
 				winEvent();
@@ -692,8 +709,10 @@ function winCheck() {
 		}
 	}
 	console.log("Side horizontal check started.");
+	//check all nine of the possible horizontal lines (from the side prespective).
 	for (var a = 0; a < 3; a++) {
 		for (var b = 0; b < 3; b++) {
+			//if all of the positions in the current horizontal line are the same and one is not equal to zero, then a player won.
 			if((xoCubeArray[a][0][b] !== 0) && (xoCubeArray[a][0][b] === xoCubeArray[a][1][b]) && (xoCubeArray[a][1][b] === xoCubeArray[a][2][b])) {
 				console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
 				winEvent();
@@ -702,7 +721,9 @@ function winCheck() {
 		}
 	}
 	console.log("Side diagonal (top left to bottom right) check started.");
+	//check all three possible diagonal (top left to bottom right) lines (from the side prespective).
 	for (var a = 0; a < 3; a++) {
+		//if all of the positions in the current diagonal line are the same and one is not equal to zero, then a player won.
 		if((xoCubeArray[0][2][a] !== 0) && (xoCubeArray[0][2][a] === xoCubeArray[1][1][a]) && (xoCubeArray[1][1][a] === xoCubeArray[2][0][a])) {
 			console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
 			winEvent();
@@ -710,7 +731,9 @@ function winCheck() {
 		}
 	}
 	console.log("Side diagonal (bottom left to top right) check started.");
+	//check all three possible diagonal (bottom right to top left) lines (from the side prespective).
 	for (var a = 0; a < 3; a++) {
+		//if all of the positions in the current diagonal line are the same and one is not equal to zerom then a player won.
 		if((xoCubeArray[0][0][a] !== 0) && (xoCubeArray[0][0][a] === xoCubeArray[1][1][a]) && (xoCubeArray[1][1][a] === xoCubeArray[2][2][a])) {
 			console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
 			winEvent();
@@ -721,6 +744,7 @@ function winCheck() {
 
 
 	console.log("Through cube diagonal check.")
+	//There are four possible through cube diagonal lines (from top corner to bottom corner).
 	if((xoCubeArray[0][0][0] !== 0) && (xoCubeArray[0][0][0] === xoCubeArray[1][1][1]) && (xoCubeArray[1][1][1] === xoCubeArray[2][2][2])) {
 		console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
 		winEvent();
