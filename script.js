@@ -768,7 +768,7 @@ function winCheck() {
 }
 
 function winEvent() {
-	//x and o had to be reversed due to addition when game is won.
+	//x and o had to be reversed due to addition when game is won (when turns are changed).
 	if (turnCounter % 2 === 0) {
 		console.log("X wins!");
 		winner = "X";
@@ -778,16 +778,25 @@ function winEvent() {
 		winner = "O";
 		winAnimation();
 	}
+	//reset the clickable canvases.
 	resetClickableCanvas();
+	//reset turn counters and turn display.
 	xORoTurnINIT();
+	//reset all cube positions to zero,
 	initXOCubeArray();
 }
 
 
+//the winner (as a string).
 var winner;
+//how many times the animation has run.
 var runCounter = 0;
+/*This block of code (the following two functions will draw a animation of the "[player] wins!" when a player wins. It will run 1300 times each time the canvas is erased and the words are moved over one pixel.
+*/
 function clearAnimationDisplay() {
+	//clear canvas.
 	winnerAnimationDisplayContext.clearRect(0, 0, 1278, 50);
+	//write text.
 	winnerAnimationDisplayContext.beginPath();
 	winnerAnimationDisplayContext.font = "20px Arial";
 	winnerAnimationDisplayContext.fillText(winner + " wins!", runCounter, 20);
@@ -796,27 +805,36 @@ function clearAnimationDisplay() {
 }
 function winAnimation() {
 	console.log(runCounter);
+	//add one to the run counter
 	runCounter++;
+	//if the run counter is less than 1300 continue the animation
 	if (runCounter < 1300) {
+		//set text every 5ms. This funcion (winAnimation) will be called again by the clearAnimationDisplay function.
+		//there will therefor be a 5ms delay inbetween each time the text is moved.
 		setTimeout(clearAnimationDisplay, 5);
 	} else {
+		//if the animation is complete display an alert message telling the users who won.
 		alert(winner + " wins!");
+		runCounter = 0;
 	}
 }
 
 
 
 function drawPlayer(xContext) {
+	//draw the appropriate player (based on who turn it is).
 	console.log("Draw player (either x or o) function triggered.");
 	if (turnCounter % 2 === 0) {
+		//draw an O in the given context.
 		drawO(xContext);
 	} else {
+		//draw an X in the given context.
 		drawX(xContext);
-		runCounter = 0;
 	}
 }
 
 function drawX(xContext) {
+	//draw X in the given context
 	//draw first line.
 	xContext.beginPath();
 	xContext.moveTo(0, 0);
@@ -834,6 +852,7 @@ function drawX(xContext) {
 }
 
 function drawO(oContext) {
+	//draw O in the given context
 	//create arc
 	oContext.beginPath();
 	oContext.lineWidth = 3;
@@ -852,6 +871,7 @@ function drawO(oContext) {
 
 
 function resetClickableCanvas() {
+	//reset all of the clickable canvases
 	ttlContext.clearRect(0, 0, 130, 130);
 	ttmContext.clearRect(0, 0, 130, 130);
 	ttrContext.clearRect(0, 0, 130, 130);
@@ -886,16 +906,20 @@ function resetClickableCanvas() {
 
 function xORoTurnINIT() {
 	console.log("Turn counter and determiner triggered (initialization).");
+	//initialize turn counter.
 	turnCounter = 1;
 	console.log("Added one to turn counter. Turn counter is at: " + turnCounter);
+	//clear the turnDisplay canvas.
 	turnDisplayContext.clearRect(0, 0, 200, 50);
 	if (turnCounter % 2 === 0) {
+		//if it is Os turn write the message "It is Os turn" in the turnDisplay canvas (top left corner).
 		console.log("It is Os turn.");
 		turnDisplayContext.beginPath();
 		turnDisplayContext.font = "20px Arial";
 		turnDisplayContext.fillText("It is Os turn", 20, 30);
 		turnDisplayContext.stroke();
 	} else {
+		//if it is Xs turn write the message "It is Xs turn" in the turnDisplay canvas (top left corner).
 		console.log("It is Xs turn.");
 		turnDisplayContext.beginPath();
 		turnDisplayContext.font = "20px Arial";
@@ -907,16 +931,21 @@ xORoTurnINIT();
 
 function xORoTurn() {
 	console.log("Turn counter and determiner triggered.");
+	//add one to the turn counter.
+	//this will make it the next persons turn.
 	turnCounter++;
 	console.log("Added one to turn counter. Turn counter is at: " + turnCounter);
-		turnDisplayContext.clearRect(0, 0, 200, 50);
+	//clear the turnDisplat canvas.
+	turnDisplayContext.clearRect(0, 0, 200, 50);
 	if (turnCounter % 2 === 0) {
+		//if it is Os turn write the message "It is Os turn" in the turnDisplay canvas (top left corner).
 		console.log("It is Os turn.");
 		turnDisplayContext.beginPath();
 		turnDisplayContext.font = "20px Arial";
 		turnDisplayContext.fillText("It is Os turn", 20, 30);
 		turnDisplayContext.stroke();
 	} else {
+		//if it is Xs turn write the message "It is Xs turn" in the turnDisplay canvas (top left corner).
 		console.log("It is Xs turn.");
 		turnDisplayContext.beginPath();
 		turnDisplayContext.font = "20px Arial";
