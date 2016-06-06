@@ -1,29 +1,44 @@
-//main canvas
+//main canvas.
 var my_canvas = document.getElementById("canvas");
+//main context.
+//This is where the three grids are drawn.
 var context = my_canvas.getContext("2d");
 
 
 
+//turnDisplay canvas.
 var turnDisplayCanvas = document.getElementById("turnDisplay");
+//turnDisplay context.
+//This is where the current players turn is displayed.
 var turnDisplayContext = turnDisplayCanvas.getContext("2d");
+//This keeps track of the turn number.
+//if the turn is divisible by 2 it will be Os turn. If not it is Xs turn.
 var turnCounter = 0;
 console.log("Turn counter initialized to 0.");
 
+
 var winnerAnimationDisplayCanvas = document.getElementById("winnerAnimationDisplay");
+//winnerAnimation context.
+//This is where the winner animation is drawn.
 var winnerAnimationDisplayContext = winnerAnimationDisplayCanvas.getContext("2d");
 
 
 
+//xoCuberArray is where the data for the cube is stored and what player is in what spot.
 var xoCubeArray = new Array();
 function initXOCubeArray() {
 	for (a = 0; a < 3; a++) {
+		//add three arrays to the first array
 		console.log("Adding new Array. Second level.");
 		xoCubeArray[a] = new Array();
 		for (b = 0; b < 3; b++) {
+			//add three array to each of the last three arrays
 			console.log("Adding new Array. Third level.");
 			xoCubeArray[a][b] = new Array();
 			for (c = 0; c < 3; c++) {
 				console.log("Set xoCubeArray[" + a +"][" + b + "][" + c + "] to 0.");
+				//set all 27 positions in the cuber to 0.
+				//0 = no player in position. X in the position equals 1. O in the position equals 2.
 				xoCubeArray[a][b][c] = 0;
 			}
 		}
@@ -32,6 +47,7 @@ function initXOCubeArray() {
 }
 initXOCubeArray();
 
+//This function sets the a position in the cube array to the current players value (X=1, O=2).
 function xoCubeArraySetter(a, b, c) {
 	if (turnCounter % 2 === 0) {
 		console.log("Set xoCubeArray[" + a + "][" + b + "][" + c + "] to 2.");
