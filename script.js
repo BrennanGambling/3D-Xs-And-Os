@@ -1,0 +1,869 @@
+//main canvas
+var my_canvas = document.getElementById("canvas");
+var context = my_canvas.getContext("2d");
+
+
+
+var turnDisplayCanvas = document.getElementById("turnDisplay");
+var turnDisplayContext = turnDisplayCanvas.getContext("2d");
+var turnCounter = 0;
+console.log("Turn counter initialized to 0.");
+
+var winnerAnimationDisplayCanvas = document.getElementById("winnerAnimationDisplay");
+var winnerAnimationDisplayContext = winnerAnimationDisplayCanvas.getContext("2d");
+
+
+
+var xoCubeArray = new Array();
+function initXOCubeArray() {
+	for (a = 0; a < 3; a++) {
+		console.log("Adding new Array. Second level.");
+		xoCubeArray[a] = new Array();
+		for (b = 0; b < 3; b++) {
+			console.log("Adding new Array. Third level.");
+			xoCubeArray[a][b] = new Array();
+			for (c = 0; c < 3; c++) {
+				console.log("Set xoCubeArray[" + a +"][" + b + "][" + c + "] to 0.");
+				xoCubeArray[a][b][c] = 0;
+			}
+		}
+	}
+	console.log("Done initializing xoCubeArray.");
+}
+initXOCubeArray();
+
+function xoCubeArraySetter(a, b, c) {
+	if (turnCounter % 2 === 0) {
+		console.log("Set xoCubeArray[" + a + "][" + b + "][" + c + "] to 2.");
+		xoCubeArray[a][b][c] = 2;
+	} else {
+		console.log("Set xoCubeArray[" + a + "][" + b + "][" + c + "] to 1.");
+		xoCubeArray[a][b][c] = 1;
+	}
+}
+
+
+
+
+
+//Top (Left) layer canvases for click detection
+var ttlCanvas = document.getElementById("ttlCanvas");
+var ttlContext = ttlCanvas.getContext("2d");
+var ttmCanvas = document.getElementById("ttmCanvas");
+var ttmContext = ttmCanvas.getContext("2d");
+var ttrCanvas = document.getElementById("ttrCanvas");
+var ttrContext = ttrCanvas.getContext("2d");
+
+var tmlCanvas = document.getElementById("tmlCanvas");
+var tmlContext = tmlCanvas.getContext("2d");
+var tmmCanvas = document.getElementById("tmmCanvas");
+var tmmContext = tmmCanvas.getContext("2d");
+var tmrCanvas = document.getElementById("tmrCanvas");
+var tmrContext = tmrCanvas.getContext("2d");
+
+var tblCanvas = document.getElementById("tblCanvas");
+var tblContext = tblCanvas.getContext("2d");
+var tbmCanvas = document.getElementById("tbmCanvas");
+var tbmContext = tbmCanvas.getContext("2d");
+var tbrCanvas = document.getElementById("tbrCanvas");
+var tbrContext = tbrCanvas.getContext("2d");
+
+
+
+//Middle (Middle) layer canvases for click detection
+var mtlCanvas = document.getElementById("mtlCanvas");
+var mtlContext = mtlCanvas.getContext("2d");
+var mtmCanvas = document.getElementById("mtmCanvas");
+var mtmContext = mtmCanvas.getContext("2d");
+var mtrCanvas = document.getElementById("mtrCanvas");
+var mtrContext = mtrCanvas.getContext("2d");
+
+var mmlCanvas = document.getElementById("mmlCanvas");
+var mmlContext = mmlCanvas.getContext("2d");
+var mmmCanvas = document.getElementById("mmmCanvas");
+var mmmContext = mmmCanvas.getContext("2d");
+var mmrCanvas = document.getElementById("mmrCanvas");
+var mmrContext = mmrCanvas.getContext("2d");
+
+var mblCanvas = document.getElementById("mblCanvas");
+var mblContext = mblCanvas.getContext("2d");
+var mbmCanvas = document.getElementById("mbmCanvas");
+var mbmContext = mbmCanvas.getContext("2d");
+var mbrCanvas = document.getElementById("mbrCanvas");
+var mbrContext = mbrCanvas.getContext("2d");
+
+
+
+//Bottom (Right) layer canvases for click detection
+var btlCanvas = document.getElementById("btlCanvas");
+var btlContext = btlCanvas.getContext("2d");
+var btmCanvas = document.getElementById("btmCanvas");
+var btmContext = btmCanvas.getContext("2d");
+var btrCanvas = document.getElementById("btrCanvas");
+var btrContext = btrCanvas.getContext("2d");
+
+var bmlCanvas = document.getElementById("bmlCanvas");
+var bmlContext = bmlCanvas.getContext("2d");
+var bmmCanvas = document.getElementById("bmmCanvas");
+var bmmContext = bmmCanvas.getContext("2d");
+var bmrCanvas = document.getElementById("bmrCanvas");
+var bmrContext = bmrCanvas.getContext("2d");
+
+var bblCanvas = document.getElementById("bblCanvas");
+var bblContext = bblCanvas.getContext("2d");
+var bbmCanvas = document.getElementById("bbmCanvas");
+var bbmContext = bbmCanvas.getContext("2d");
+var bbrCanvas = document.getElementById("bbrCanvas");
+var bbrContext = bbrCanvas.getContext("2d");
+
+
+function drawSquares() {
+	function drawLine(xStart, yStart, xEnd, yEnd) {
+		console.log("Drawing line from (" + xStart + ", " + yStart + ") to (" + xEnd + ", " + yEnd + ").");
+		context.beginPath();
+		context.moveTo(xStart,yStart);
+		context.lineWidth = 3;
+		context.lineTo(xEnd, yEnd);
+		context.stroke();
+	}
+	function topSquare() {
+		console.log("Drawing top (left) square.");
+		drawLine(0, 263, 399, 263);
+		drawLine(0, 396, 399, 396);
+		drawLine(133, 130, 133, 529);
+		drawLine(266, 130, 266, 529);
+	}	
+	function middleSquare() {
+		console.log("Drawing middle (middle) square.")
+		drawLine(440, 263, 839, 263);
+		drawLine(440, 396, 839, 396);
+		drawLine(573, 130, 573, 529);
+		drawLine(706, 130, 706, 529);
+	}
+	function bottomSquare() {
+		console.log("Drawing bottom (right) square.");
+		drawLine(880, 263, 1279, 263);
+		drawLine(880, 396, 1279, 396);
+		drawLine(1013, 130, 1013, 529);
+		drawLine(1146, 130, 1146, 529);
+	}
+	topSquare();
+	middleSquare();
+	bottomSquare();
+}
+drawSquares();
+
+function clickableSquares() {
+	function topClickableSquares() {
+		ttlCanvas.addEventListener("click", ttlClick, false);
+		function ttlClick() {
+			console.log("ttlCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[0][0][0] === 0) {
+				console.log("ttlCanvas events started (square is not taken).");
+				drawPlayer(ttlContext);
+				xORoTurn();
+				xoCubeArraySetter(0, 0, 0);
+				winCheck();
+			} else {
+				console.log("ttlCanvas has already been set to: " + xoCubeArray[0][0][0] + "(1 = X, 2 = O)");
+			}
+		}
+		
+		ttmCanvas.addEventListener("click", ttmClick, false);
+		function ttmClick() {
+			console.log("ttmCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[0][0][1] === 0) {
+				console.log("ttmCanvas events started (square is not taken).");
+				drawPlayer(ttmContext);
+				xORoTurn();
+				xoCubeArraySetter(0, 0, 1);
+				winCheck();
+			} else {
+				console.log("ttmCanvas has already been set to: " + xoCubeArray[0][0][1] + "(1 = X, 2 = O)");
+			}
+		}
+		
+		ttrCanvas.addEventListener("click", ttrClick, false);
+		function ttrClick() {
+			console.log("ttrCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[0][0][2] === 0) {
+				console.log("ttrCanvas events started (square is not taken).");
+				drawPlayer(ttrContext);
+				xORoTurn();
+				xoCubeArraySetter(0, 0, 2);
+				winCheck();
+			} else {
+				console.log("ttrCanvas has already been set to: " + xoCubeArray[0][0][2] + "(1 = X, 2 = O)");
+			}
+		}
+
+
+
+
+		tmlCanvas.addEventListener("click", tmlClick, false);
+		function tmlClick() {
+			console.log("tmlCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[0][1][0] === 0) {
+				console.log("tmlCanvas events started (square is not taken).");
+				drawPlayer(tmlContext);
+				xORoTurn();
+				xoCubeArraySetter(0, 1, 0);
+				winCheck();
+			} else {
+				console.log("tmlCanvas has already been set to: " + xoCubeArray[0][1][0] + "(1 = X, 2 = O)");
+			}
+		}
+		
+		tmmCanvas.addEventListener("click", tmmClick, false);
+		function tmmClick() {
+			console.log("tmmCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[0][1][1] === 0) {
+				console.log("tmmCanvas events started (square is not taken).");
+				drawPlayer(tmmContext);
+				xORoTurn();
+				xoCubeArraySetter(0, 1, 1);
+				winCheck();
+			} else {
+				console.log("tmmCanvas has already been set to: " + xoCubeArray[0][1][1] + "(1 = X, 2 = O)");
+			}
+		}
+		
+		tmrCanvas.addEventListener("click", tmrClick, false);
+		function tmrClick() {
+			console.log("tmrCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[0][1][2] === 0) {
+				console.log("tmrCanvas events started (square is not taken).");
+				drawPlayer(tmrContext);
+				xORoTurn();
+				xoCubeArraySetter(0, 1, 2);
+				winCheck();
+			} else {
+				console.log("tmrCanvas has already been set to: " + xoCubeArray[0][1][2] + "(1 = X, 2 = O)");
+			}
+		}
+
+
+
+
+		tblCanvas.addEventListener("click", tblClick, false);
+		function tblClick() {
+			console.log("tblCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[0][2][0] === 0) {
+				console.log("tblCanvas events started (square is not taken).");
+				drawPlayer(tblContext);
+				xORoTurn();
+				xoCubeArraySetter(0, 2, 0);
+				winCheck();
+			} else {
+				console.log("tblCanvas has already been set to: " + xoCubeArray[0][2][0] + "(1 = X, 2 = O)");
+			}
+		}
+		
+		tbmCanvas.addEventListener("click", tbmClick, false);
+		function tbmClick() {
+			console.log("tbmCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[0][2][1] === 0) {
+				console.log("tbmCanvas events started (square is not taken).");
+				drawPlayer(tbmContext);
+				xORoTurn();
+				xoCubeArraySetter(0, 2, 1);
+				winCheck();
+			} else {
+				console.log("tbmCanvas has already been set to: " + xoCubeArray[0][2][1] + "(1 = X, 2 = O)");
+			}
+		}
+		
+		tbrCanvas.addEventListener("click", tbrClick, false);
+		function tbrClick() {
+			console.log("tbrCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[0][2][2] === 0) {
+				console.log("tbrCanvas events started (square is not taken).");
+				drawPlayer(tbrContext);
+				xORoTurn();
+				xoCubeArraySetter(0, 2, 2);
+				winCheck();
+			} else {
+				console.log("tbrCanvas has already been set to: " + xoCubeArray[0][2][2] + "(1 = X, 2 = O)");
+			}
+		}
+		console.log("Added event listeners for the top (left) square.");
+	}
+	topClickableSquares();
+
+	function middleClickableSquares() {
+		mtlCanvas.addEventListener("click", mtlClick, false);
+		function mtlClick() {
+			console.log("mtlCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[1][0][0] === 0) {
+				console.log("mtlCanvas events started (square is not taken).");
+				drawPlayer(mtlContext);
+				xORoTurn();
+				xoCubeArraySetter(1, 0, 0);
+				winCheck();
+			} else {
+				console.log("mtlCanvas has already been set to: " + xoCubeArray[1][0][0] + " (1 = X, 2 = O).");
+			}
+		}
+
+		mtmCanvas.addEventListener("click", mtmClick, false);
+		function mtmClick() {
+			console.log("mtmCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[1][0][1] === 0) {
+				console.log("mtmCanvas events started (square is not taken).");
+				drawPlayer(mtmContext);
+				xORoTurn();
+				xoCubeArraySetter(1, 0, 1);
+				winCheck();
+			} else {
+				console.log("mtmCanvas has already been set to: " + xoCubeArray[1][0][1] + " (1 = X, 2 = O).");
+			}
+		}
+
+		mtrCanvas.addEventListener("click", mtrClick, false);
+		function mtrClick() {
+			console.log("mtrCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[1][0][2] === 0) {
+				console.log("mtrCanvas events started (square is not taken).");
+				drawPlayer(mtrContext);
+				xORoTurn();
+				xoCubeArraySetter(1, 0, 2);
+				winCheck();
+			} else {
+				console.log("mtrCanvas has already been set to: " + xoCubeArray[1][0][2] + " (1 = X, 2 = O).");
+			}
+		}
+
+
+
+		mmlCanvas.addEventListener("click", mmlClick, false);
+		function mmlClick() {
+			console.log("mmlCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[1][1][0] === 0) {
+				console.log("mmlCanvas events started (square is not taken).");
+				drawPlayer(mmlContext);
+				xORoTurn();
+				xoCubeArraySetter(1, 1, 0);
+				winCheck();
+			} else {
+				console.log("mmlCanvas has already been set to: " + xoCubeArray[1][1][0] + " (1 = X, 2 = O).");
+			}
+		}
+
+		mmmCanvas.addEventListener("click", mmmClick, false);
+		function mmmClick() {
+			console.log("mmmCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[1][1][1] === 0) {
+				console.log("mmmCanvas events started (square is not taken).");
+				drawPlayer(mmmContext);
+				xORoTurn();
+				xoCubeArraySetter(1, 1, 1);
+				winCheck();
+			} else {
+				console.log("mmmCanvas has already been set to: " + xoCubeArray[1][1][1] + " (1 = X, 2 = O).");
+			}
+		}
+
+		mmrCanvas.addEventListener("click", mmrClick, false);
+		function mmrClick() {
+			console.log("mmrCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[1][1][2] === 0) {
+				console.log("mmrCanvas events started (square is not taken).");
+				drawPlayer(mmrContext);
+				xORoTurn();
+				xoCubeArraySetter(1, 1, 2);
+				winCheck();
+			} else {
+				console.log("mmrCanvas has already been set to: " + xoCubeArray[1][1][2] + " (1 = X, 2 = O).");
+			}
+		}
+
+
+
+
+		mblCanvas.addEventListener("click", mblClick, false);
+		function mblClick() {
+			console.log("mblCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[1][2][0] === 0) {
+				console.log("mblCanvas events started (square is not taken).");
+				drawPlayer(mblContext);
+				xORoTurn();
+				xoCubeArraySetter(1, 2, 0);
+				winCheck();
+			} else {
+				console.log("mblCanvas has already been set to: " + xoCubeArray[1][2][0] + " (1 = X, 2 = O).");
+			}
+		}
+
+		mbmCanvas.addEventListener("click", mbmClick, false);
+		function mbmClick() {
+			console.log("mbmCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[1][2][1] === 0) {
+				console.log("mbmCanvas events started (square is not taken).");
+				drawPlayer(mbmContext);
+				xORoTurn();
+				xoCubeArraySetter(1, 2, 1);
+				winCheck();
+			} else {
+				console.log("mbmCanvas has already been set to: " + xoCubeArray[1][2][1] + " (1 = X, 2 = O).");
+			}
+		}
+
+		mbrCanvas.addEventListener("click", mbrClick, false);
+		function mbrClick() {
+			console.log("mbrCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[1][2][2] === 0) {
+				console.log("mbrCanvas events started (square is not taken).");
+				drawPlayer(mbrContext);
+				xORoTurn();
+				xoCubeArraySetter(1, 2, 2);
+				winCheck();
+			} else {
+				console.log("mbrCanvas has already been set to: " + xoCubeArray[1][2][2] + " (1 = X, 2 = O).");
+			}
+		}
+		console.log("Added event listeners for the middle (middle) square.");
+	}
+	middleClickableSquares();
+
+	function bottomClickableSquares() {
+
+		btlCanvas.addEventListener("click", btlClick, false);
+		function btlClick() {
+			console.log("btlCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[2][0][0] === 0) {
+				console.log("btlCanvas events started (square is not taken).");
+				drawPlayer(btlContext);
+				xORoTurn();
+				xoCubeArraySetter(2, 0, 0);
+				winCheck();
+			} else {
+				console.log("btlCanvas has already been set to: " + xoCubeArray[2][0][0] + " (1 = X, 2 = O).");
+			}
+		}
+
+		btmCanvas.addEventListener("click", btmClick, false);
+		function btmClick() {
+			console.log("btlmCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[2][0][1] === 0) {
+				console.log("btmCanvas events started (square is not taken).");
+				drawPlayer(btmContext);
+				xORoTurn();
+				xoCubeArraySetter(2, 0, 1);
+				winCheck();
+			} else {
+				console.log("btlmCanva has already been set to: " + xoCubeArray[2][0][1] + " (1 = X, 2 = O).");
+			}
+		}
+
+		btrCanvas.addEventListener("click", btrClick, false);
+		function btrClick() {
+			console.log("btrCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[2][0][2] === 0) {
+				console.log("btrCanvas events started (square is not taken).");
+				drawPlayer(btrContext);
+				xORoTurn();
+				xoCubeArraySetter(2, 0, 2);
+				winCheck();
+			} else {
+				console.log("btrCanvas has already been set to: " + xoCubeArray[2][0][2] + " (1 = X, 2 = O).");
+			}
+		}
+
+
+
+		bmlCanvas.addEventListener("click", bmlClick, false);
+		function bmlClick() {
+			console.log("bmlCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[2][1][0] === 0) {
+				console.log("bmlCanvas events started (square is not taken).");
+				drawPlayer(bmlContext);
+				xORoTurn();
+				xoCubeArraySetter(2, 1, 0);
+				winCheck();
+			} else {
+				console.log("bmlCanvas has already been set to: " + xoCubeArray[2][1][0] + " (1 = X, 2 = O).");
+			}
+		}
+
+		bmmCanvas.addEventListener("click", bmmClick, false);
+		function bmmClick() {
+			console.log("bmmCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[2][1][1] === 0) {
+				console.log("bmmCanvas events started (square is not taken).");
+				drawPlayer(bmmContext);
+				xORoTurn();
+				xoCubeArraySetter(2, 1, 1);
+				winCheck();
+			} else {
+				console.log("bmmCanvas has already been set to: " + xoCubeArray[2][1][1] + " (1 = X, 2 = O).");
+			}
+		}
+		bmrCanvas.addEventListener("click", bmrClick, false);
+		function bmrClick() {
+			console.log("bmrCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[2][1][2] === 0) {
+				console.log("bmrCanvas events started (square is not taken).");
+				drawPlayer(bmrContext);
+				xORoTurn();
+				xoCubeArraySetter(2, 1, 2);
+				winCheck();
+			} else {
+				console.log("bmrCanvas has already been set to: " + xoCubeArray[2][1][2] + " (1 = X, 2 = O).");
+			}
+		}
+
+
+
+		bblCanvas.addEventListener("click", bblClick, false);
+		function bblClick() {
+			console.log("bblCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[2][2][0] === 0) {
+				console.log("bblCanvas events started (square is not taken).");
+				drawPlayer(bblContext);
+				xORoTurn();
+				xoCubeArraySetter(2, 2, 0);
+				winCheck();
+			} else {
+				console.log("bblCanvas has already been set to: " + xoCubeArray[2][2][0] + " (1 = X, 2 = O).");
+			}
+		}
+
+		bbmCanvas.addEventListener("click", bbmClick, false);
+		function bbmClick() {
+			console.log("bbmCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[2][2][1] === 0) {
+				console.log("bbmCanvas events started (square is not taken).");
+				drawPlayer(bbmContext);
+				xORoTurn();
+				xoCubeArraySetter(2, 2, 1);
+				winCheck();
+			} else {
+				console.log("bbmCanvas has already been set to: " + xoCubeArray[2][2][1] + " (1 = X, 2 = O).");
+			}
+		}
+
+		bbrCanvas.addEventListener("click", bbrClick, false);
+		function bbrClick() {
+			console.log("bbrCanvas has been clicked. Click event triggered.");
+			if (xoCubeArray[2][2][2] === 0) {
+				console.log("bbrCanvas events started (square is not taken).");
+				drawPlayer(bbrContext);
+				xORoTurn();
+				xoCubeArraySetter(2, 2, 2);
+				winCheck();
+			} else {
+				console.log("bbrCanvas has already been set to: " + xoCubeArray[2][2][2] + " (1 = X, 2 = O).");
+			}
+		}
+		console.log("Added event listeners for the bottom (right) square.");
+	}
+	bottomClickableSquares();
+}
+clickableSquares();
+
+
+
+function winCheck() {
+	console.log("Win checker started.");
+	
+
+	console.log("Top checks started.");
+	console.log("Top vertical check started.");
+	for (var a = 0; a < 3; a++) {
+		for (var b = 0; b < 3; b++) {
+			if((xoCubeArray[a][0][b] !== 0) && (xoCubeArray[a][0][b] === xoCubeArray[a][1][b]) && (xoCubeArray[a][1][b] === xoCubeArray[a][2][b])) {
+				console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+				winEvent();
+				return;
+			}
+		}
+	}
+	console.log("Top horizontal check started.");
+	for (var a = 0; a < 3; a++) {
+		for (var b = 0; b < 3; b++) {
+			if((xoCubeArray[a][b][0] !== 0) && (xoCubeArray[a][b][0] === xoCubeArray[a][b][1]) && (xoCubeArray[a][b][1] === xoCubeArray[a][b][2])) {
+				console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+				winEvent();
+				return;
+			}
+		}
+	}
+	console.log("Top diagonal (top left to bottom right) check started.");
+	for (var a = 0; a < 3; a++) {
+		if((xoCubeArray[a][0][0] !== 0) && (xoCubeArray[a][0][0] === xoCubeArray[a][1][1]) && (xoCubeArray[a][1][1] === xoCubeArray[a][2][2])) {
+			console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+			winEvent();
+			return;
+		}
+	}
+	console.log("Top diagonal (bottom left to top right) check started.");
+	for (var a = 0; a < 3; a++) {
+		if((xoCubeArray[a][2][0] !== 0) && (xoCubeArray[a][2][0] === xoCubeArray[a][1][1]) && (xoCubeArray[a][1][1] === xoCubeArray[a][0][2])) {
+			console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+			winEvent();
+			return;
+		}
+	}
+
+
+
+	console.log("Front checks started.");
+	console.log("Front vertical check started.");
+	for (var a = 0; a < 3; a++) {
+		for (var b = 0; b < 3; b++) {
+			if((xoCubeArray[0][a][b] !== 0) && (xoCubeArray[0][a][b] === xoCubeArray[1][a][b]) && (xoCubeArray[1][a][b] === xoCubeArray[2][a][b])) {
+			console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+			winEvent();
+			return;
+			}
+		}
+	}
+	console.log("Front horizontal check started.");
+	for (var a = 0; a < 3; a++) {
+		for (var b = 0; b < 3; b++) {
+			if((xoCubeArray[a][b][0] !== 0) && (xoCubeArray[a][b][0] === xoCubeArray[a][b][1]) && (xoCubeArray[a][b][1] === xoCubeArray[a][b][2])) {
+				console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+				winEvent();
+				return;
+			}
+		}
+	}
+	console.log("Front diagonal (top left to bottom right) check started.");
+	for (var a = 0; a < 3; a++) {
+		if((xoCubeArray[0][a][0] !== 0) && (xoCubeArray[0][a][0] === xoCubeArray[1][a][1]) && (xoCubeArray[1][a][1] === xoCubeArray[2][a][2])) {
+			console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+			winEvent();
+			return;
+		}
+	}
+	console.log("Front diagonal (bottom left to top right) check started.");
+	for (var a = 0; a < 3; a++) {
+		if((xoCubeArray[2][a][0] !== 0) && (xoCubeArray[2][a][0] === xoCubeArray[1][a][1]) && (xoCubeArray[1][a][1] === xoCubeArray[0][a][2])) {
+			console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+			winEvent();
+			return;
+		}
+	}
+
+
+
+	console.log("Side checks started.");
+	console.log("Side vertical check started.");
+	for (var a = 0; a < 3; a++) {
+		for (var b = 0; b < 3; b++) {
+			if((xoCubeArray[0][a][b] !== 0) && (xoCubeArray[0][a][b] === xoCubeArray[1][a][b]) && (xoCubeArray[1][a][b] === xoCubeArray[2][a][b])) {
+				console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+				winEvent();
+				return;
+			}
+		}
+	}
+	console.log("Side horizontal check started.");
+	for (var a = 0; a < 3; a++) {
+		for (var b = 0; b < 3; b++) {
+			if((xoCubeArray[a][0][b] !== 0) && (xoCubeArray[a][0][b] === xoCubeArray[a][1][b]) && (xoCubeArray[a][1][b] === xoCubeArray[a][2][b])) {
+				console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+				winEvent();
+				return;
+			}
+		}
+	}
+	console.log("Side diagonal (top left to bottom right) check started.");
+	for (var a = 0; a < 3; a++) {
+		if((xoCubeArray[0][2][a] !== 0) && (xoCubeArray[0][2][a] === xoCubeArray[1][1][a]) && (xoCubeArray[1][1][a] === xoCubeArray[2][0][a])) {
+			console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+			winEvent();
+			return;
+		}
+	}
+	console.log("Side diagonal (bottom left to top right) check started.");
+	for (var a = 0; a < 3; a++) {
+		if((xoCubeArray[0][0][a] !== 0) && (xoCubeArray[0][0][a] === xoCubeArray[1][1][a]) && (xoCubeArray[1][1][a] === xoCubeArray[2][2][a])) {
+			console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+			winEvent();
+			return;
+		}
+	}
+
+
+
+	console.log("Through cube diagonal check.")
+	if((xoCubeArray[0][0][0] !== 0) && (xoCubeArray[0][0][0] === xoCubeArray[1][1][1]) && (xoCubeArray[1][1][1] === xoCubeArray[2][2][2])) {
+		console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+		winEvent();
+		return;
+	}
+	if((xoCubeArray[0][0][2] !== 0) && (xoCubeArray[0][0][2] === xoCubeArray[1][1][1]) && (xoCubeArray[1][1][1] === xoCubeArray[2][2][0])) {
+		console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+		winEvent();
+		return;
+	}
+	if((xoCubeArray[0][2][0] !== 0) && (xoCubeArray[0][2][0] === xoCubeArray[1][1][1]) && (xoCubeArray[1][1][1] === xoCubeArray[2][0][2])) {
+		console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+		winEvent();
+		return;
+	}
+	if((xoCubeArray[0][2][2] !== 0) && (xoCubeArray[0][2][2] === xoCubeArray[1][1][1]) && (xoCubeArray[1][1][1] === xoCubeArray[2][0][0])) {
+		console.log("A player won! Starting winEvent. Stopping execution of winCheck.");
+		winEvent();
+		return;
+	}
+}
+
+function winEvent() {
+	//x and o had to be reversed due to addition when game is won.
+	if (turnCounter % 2 === 0) {
+		console.log("X wins!");
+		winner = "X";
+		winAnimation();
+	} else {
+		console.log("O wins!");
+		winner = "O";
+		winAnimation();
+	}
+	resetClickableCanvas();
+	xORoTurnINIT();
+	initXOCubeArray();
+}
+
+
+var winner;
+var runCounter = 0;
+function clearAnimationDisplay() {
+	winnerAnimationDisplayContext.clearRect(0, 0, 1278, 50);
+	winnerAnimationDisplayContext.beginPath();
+	winnerAnimationDisplayContext.font = "20px Arial";
+	winnerAnimationDisplayContext.fillText(winner + " wins!", runCounter, 20);
+	winnerAnimationDisplayContext.stroke();
+	winAnimation();
+}
+function winAnimation() {
+	console.log(runCounter);
+	runCounter++;
+	if (runCounter < 1300) {
+		setTimeout(clearAnimationDisplay, 5);
+	} else {
+		alert(winner + " wins!");
+	}
+}
+
+
+
+function drawPlayer(xContext) {
+	console.log("Draw player (either x or o) function triggered.");
+	if (turnCounter % 2 === 0) {
+		drawO(xContext);
+	} else {
+		drawX(xContext);
+		runCounter = 0;
+	}
+}
+
+function drawX(xContext) {
+	//draw first line.
+	xContext.beginPath();
+	xContext.moveTo(0, 0);
+	xContext.lineWidth = 3;
+	xContext.lineTo(130, 130);
+	xContext.stroke();
+
+	//draw second line.
+	xContext.beginPath();
+	xContext.moveTo(130, 0);
+	xContext.lineWidth = 3;
+	xContext.lineTo(0, 130);
+	xContext.stroke();
+	console.log("Drawing X.");
+}
+
+function drawO(oContext) {
+	//create arc
+	oContext.beginPath();
+	oContext.lineWidth = 3;
+	oContext.arc(65, 65, 63, 0, 2*Math.PI);
+	oContext.stroke();
+	console.log("Drawing O.");
+} 
+
+/*function clearCanvas(clearContext) {
+	//clear the entire canvas.
+	//only for click decetion canvases (due to size).
+	clearContext.clearRect(0, 0, 130, 130);
+	console.log("Clearing canvas.");
+}*/
+
+
+
+function resetClickableCanvas() {
+	ttlContext.clearRect(0, 0, 130, 130);
+	ttmContext.clearRect(0, 0, 130, 130);
+	ttrContext.clearRect(0, 0, 130, 130);
+	tmlContext.clearRect(0, 0, 130, 130);
+	tmmContext.clearRect(0, 0, 130, 130);
+	tmrContext.clearRect(0, 0, 130, 130);
+	tblContext.clearRect(0, 0, 130, 130);
+	tbmContext.clearRect(0, 0, 130, 130);
+	tbrContext.clearRect(0, 0, 130, 130);
+	mtlContext.clearRect(0, 0, 130, 130);
+	mtmContext.clearRect(0, 0, 130, 130);
+	mtrContext.clearRect(0, 0, 130, 130);
+	mmlContext.clearRect(0, 0, 130, 130);
+	mmmContext.clearRect(0, 0, 130, 130);
+	mmrContext.clearRect(0, 0, 130, 130);
+	mblContext.clearRect(0, 0, 130, 130);
+	mbmContext.clearRect(0, 0, 130, 130);
+	mbrContext.clearRect(0, 0, 130, 130);
+	btlContext.clearRect(0, 0, 130, 130);
+	btmContext.clearRect(0, 0, 130, 130);
+	btrContext.clearRect(0, 0, 130, 130);
+	bmlContext.clearRect(0, 0, 130, 130);
+	bmmContext.clearRect(0, 0, 130, 130);
+	bmrContext.clearRect(0, 0, 130, 130);
+	bblContext.clearRect(0, 0, 130, 130);
+	bbmContext.clearRect(0, 0, 130, 130);
+	bbrContext.clearRect(0, 0, 130, 130);
+	console.log("Cleared all click detection canvases.");
+}
+
+
+
+function xORoTurnINIT() {
+	console.log("Turn counter and determiner triggered (initialization).");
+	turnCounter = 1;
+	console.log("Added one to turn counter. Turn counter is at: " + turnCounter);
+	turnDisplayContext.clearRect(0, 0, 200, 50);
+	if (turnCounter % 2 === 0) {
+		console.log("It is Os turn.");
+		turnDisplayContext.beginPath();
+		turnDisplayContext.font = "20px Arial";
+		turnDisplayContext.fillText("It is Os turn", 20, 30);
+		turnDisplayContext.stroke();
+	} else {
+		console.log("It is Xs turn.");
+		turnDisplayContext.beginPath();
+		turnDisplayContext.font = "20px Arial";
+		turnDisplayContext.fillText("It is Xs turn", 20, 30);
+		turnDisplayContext.stroke();
+	}
+}
+xORoTurnINIT();
+
+function xORoTurn() {
+	console.log("Turn counter and determiner triggered.");
+	turnCounter++;
+	console.log("Added one to turn counter. Turn counter is at: " + turnCounter);
+		turnDisplayContext.clearRect(0, 0, 200, 50);
+	if (turnCounter % 2 === 0) {
+		console.log("It is Os turn.");
+		turnDisplayContext.beginPath();
+		turnDisplayContext.font = "20px Arial";
+		turnDisplayContext.fillText("It is Os turn", 20, 30);
+		turnDisplayContext.stroke();
+	} else {
+		console.log("It is Xs turn.");
+		turnDisplayContext.beginPath();
+		turnDisplayContext.font = "20px Arial";
+		turnDisplayContext.fillText("It is Xs turn", 20, 30);
+		turnDisplayContext.stroke();
+	}
+}
