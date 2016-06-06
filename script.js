@@ -662,7 +662,7 @@ function winCheck() {
 	}
 	console.log("Front horizontal check started.");
 	//check all nine possible horizontal lines (from the front prespective).
-	//redundant (same as top horizontal check).
+	//possibly redundant (same as top horizontal check).
 	for (var a = 0; a < 3; a++) {
 		for (var b = 0; b < 3; b++) {
 			//if all of the positions in the current horizontal line are the same and one is not equal to zero, then a player won.
@@ -699,7 +699,7 @@ function winCheck() {
 	console.log("Side checks started.");
 	console.log("Side vertical check started.");
 	//check all nine of the possible vertical lines (from the side prespective).
-	//redundant (same as front vertical).
+	//possibly redundant (same as front vertical).
 	for (var a = 0; a < 3; a++) {
 		for (var b = 0; b < 3; b++) {
 			//if all of the positions in the current vertical line are the same and one is not equal to zero, then a player won.
@@ -712,7 +712,7 @@ function winCheck() {
 	}
 	console.log("Side horizontal check started.");
 	//check all nine of the possible horizontal lines (from the side prespective).
-	//redundant (same as top vertical check.)
+	//possibly redundant (same as top vertical check.)
 	for (var a = 0; a < 3; a++) {
 		for (var b = 0; b < 3; b++) {
 			//if all of the positions in the current horizontal line are the same and one is not equal to zero, then a player won.
